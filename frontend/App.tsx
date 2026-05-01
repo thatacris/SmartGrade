@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+import SubmitScreen from './src/screens/SubmitScreen';
+
+export default function App() {
+  return <SubmitScreen />;
+}
+=======
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -18,3 +25,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+>>>>>>> 1512d902f483d455b2bb664609bf1e592755cd70
