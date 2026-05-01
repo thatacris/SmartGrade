@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import styles from './Styles';
+import styles from './style';
 
 function TelaLogin({ navigation }) {
   const [email, setEmail] = useState('');
