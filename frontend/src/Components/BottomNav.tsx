@@ -1,11 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
-import {
-  LayoutGrid,
-  FileText,
-  User,
-} from "lucide-react-native";
-import { styles } from "../feedbacks/styles";
+import { LayoutGrid, FileText, User } from "lucide-react-native";
+import { styles } from "../screens/Feedback/style";
 
 export default function BottomNav() {
   return (

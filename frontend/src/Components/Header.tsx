@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Menu } from "lucide-react-native";
-import { styles } from "../style/styles";
+import { styles } from "../screens/Feedback/style";
 
 export default function Header() {
   return (

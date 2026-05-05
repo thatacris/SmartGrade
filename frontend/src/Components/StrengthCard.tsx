@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { ShieldCheck } from "lucide-react-native";
-import { styles } from "../style/styles";
+import { styles } from "../screens/Feedback/style";
 
 export default function StrengthCard() {
   return (
