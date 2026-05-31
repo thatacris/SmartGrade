@@ -1,7 +1,6 @@
 import React from "react";
-import { View , Text, TouchableOpacity} from "react-native";
-
-import {styles} from "../screens/Apagaratividade/style";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { styles } from "app/screens/Feedback/style";
 
 type Props = {
     onPress: () => void;

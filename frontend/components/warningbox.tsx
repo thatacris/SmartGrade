@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-import {styles} from "../screens/Apagaratividade/style";
+import {styles} from "app/screens/Apagaratividade/style";
 
 export default function WarningBox() {
     return (

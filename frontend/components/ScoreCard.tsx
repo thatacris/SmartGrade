@@ -6,8 +6,7 @@ import {
 
 import { LinearGradient } from "expo-linear-gradient";
 
-import { styles } from "../screens/Feedback/style";
-
+import { styles } from "app/screens/Feedback/style";
 export default function ScoreCard() {
   return (
     <>

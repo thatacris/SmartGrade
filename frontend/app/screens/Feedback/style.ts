@@ -144,7 +144,6 @@ export const styles = StyleSheet.create({
 
     marginBottom: 22,
   },
-
   iconBox: {
     width: 54,
     height: 54,
@@ -364,6 +363,19 @@ export const styles = StyleSheet.create({
     marginTop: 4,
 
     fontWeight: "700",
+  },
+  confirmButton: {
+    marginTop: 24,
+    marginBottom: 140,
+    paddingVertical: 18,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  confirmButtonText: {
+    color: colors.white,
+    fontSize: 18,
+    fontWeight: "800",
   },
 });
 

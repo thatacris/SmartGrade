@@ -6,7 +6,7 @@ import {
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { styles } from "../screens/Feedback/style";
+import { styles } from "app/screens/Feedback/style";
 
 export default function StrengthCard() {
   return (

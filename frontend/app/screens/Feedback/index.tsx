@@ -7,17 +7,16 @@ import {
 
 import { StatusBar } from "expo-status-bar";
 
-import Header from "../../components/Header";
-import ScoreCard from "../../components/ScoreCard";
-import StrengthCard from "../../components/StrengthCard";
-import DetailsCard from "../../components/DetailsCard";
-import TipsCard from "../../components/TipsCard";
-import ProgressCard from "../../components/ProgressCard";
-import UploadCard from "../../components/UploadCard";
-import BottomNav from "../../components/BottomNav";
+import Header from "../../../components/Header";
+import ScoreCard from "../../../components/ScoreCard";
+import StrengthCard from "../../../components/StrengthCard";
+import DetailsCard from "../../../components/DetailsCard";
+import TipsCard from "../../../components/TipsCard";
+import ProgressCard from "../../../components/ProgressCard";
+import UploadCard from "../../../components/UploadCard";
+import BottomNav from "../../../components/BottomNav";
 
 import { styles } from "./style";
-import { Button } from "react-native/types_generated/index";
 
 export default function Home() {
   const [page, setPage] = useState("feedback")

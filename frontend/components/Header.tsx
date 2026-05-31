@@ -2,33 +2,60 @@ import React from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
-  Image,
 } from "react-native";
 
-import Feather from "@expo/vector-icons/Feather";
+import { globalStyles } from "app/screens/Feedback/style";
 
-import { styles } from "../screens/Feedback/style";
-
-export default function Header() {
+export default function ProgressCard() {
   return (
-    <View style={styles.header}>
-      <TouchableOpacity>
-        <Feather name="menu" size={30} color="#2F5BB7" />
-      </TouchableOpacity>
+    <View style={globalStyles.card}>
+      <Text style={globalStyles.statsTitle}>
+        ESTATÍSTICAS RÁPIDAS
+      </Text>
 
-      <Text style={styles.logo}>SmartGrade</Text>
-
-      <View style={styles.headerRight}>
-        <Text style={styles.headerTitle}>
-          Resultado{"\n"}do Trabalho
+      <View style={globalStyles.statRow}>
+        <Text style={globalStyles.statLabel}>
+          Média da Turma
         </Text>
 
-        <Image
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-          }}
-          style={styles.avatar}
+        <Text style={globalStyles.statValue}>
+          7.2
+        </Text>
+      </View>
+
+      <View style={globalStyles.progressBar}>
+        <View
+          style={[
+            globalStyles.progressFill,
+            { width: "72%" },
+          ]}
+        />
+      </View>
+
+      <View
+        style={[
+          globalStyles.statRow,
+          { marginTop: 24 },
+        ]}
+      >
+        <Text style={globalStyles.statLabel}>
+          Seu Percentil
+        </Text>
+
+        <Text style={globalStyles.statValue}>
+          Top 15%
+        </Text>
+      </View>
+
+      <View style={globalStyles.progressBar}>
+        <View
+          style={[
+            globalStyles.progressFill,
+            {
+              width: "85%",
+              backgroundColor: "#9C27B0",
+            },
+          ]}
         />
       </View>
     </View>
