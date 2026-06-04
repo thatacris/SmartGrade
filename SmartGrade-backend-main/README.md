@@ -1,1 +1,0 @@
-# SmartGrade backend

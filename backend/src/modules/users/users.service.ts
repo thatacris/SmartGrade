@@ -6,7 +6,7 @@ import {
 
 import * as bcrypt from 'bcrypt';
 
-import { Prisma } from '../../../generated/prisma/client';
+import { Prisma } from '@prisma/client';
 
 import { PrismaService } from '../../prisma/prisma.service';
 
@@ -65,10 +65,9 @@ export class UsersService {
         },
       });
     } catch (error) {
-      const prismaError =
-    error as Prisma.PrismaClientKnownRequestError;
       if (
-        prismaError.code === 'P2002'
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
       ) {
         throw new ConflictException(
           'E-mail já cadastrado',
@@ -101,13 +100,12 @@ export class UsersService {
         where: {
           id,
         },
-        data, 
+        data,
       });
     } catch (error) {
-      const prismaError =
-    error as Prisma.PrismaClientKnownRequestError;
       if (
-        prismaError.code === 'P2002'
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
       ) {
         throw new ConflictException(
           'E-mail já cadastrado',

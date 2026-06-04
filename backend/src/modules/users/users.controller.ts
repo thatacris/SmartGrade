@@ -15,13 +15,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-import { RolesGuard } from '../auth/guard/roles.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
-import { Roles } from '../auth/decorator/roles.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
 
-import { Role } from '../../../generated/prisma/client';
+import { Role } from '@prisma/client';
 
 @Controller('users')
 export class UsersController {

@@ -8,29 +8,29 @@ datasource db {
 }
 
 model User {
-  id                 Int              @id @default(autoincrement())
-  name               String
-  email              String           @unique
-  password           String
-  role               Role
-  tasks              Task[]           @relation("UserTasks")
-  criteriaCreated    TaskCriteria[]   @relation("UserCriteria")
-  submissionsCreated TaskSubmission[] @relation("UserSubmissions")
-  submissions        TaskSubmission[] @relation("StudentSubmissions")
+  id                                              Int              @id @default(autoincrement())
+  name                                            String
+  email                                           String           @unique
+  password                                        String
+  role                                            Role
+  tasks                                           Task[]           @relation("UserTasks")
+  TaskCriteria                                    TaskCriteria[]
+  TaskSubmission_TaskSubmission_createdByIdToUser TaskSubmission[] @relation("TaskSubmission_createdByIdToUser")
+  submissions                                     TaskSubmission[]
 }
 
 model Task {
-  id          Int                   @id @default(autoincrement())
-  title       String
-  description String
-  code        String                @unique
-  createdAt   DateTime              @default(now())
-  deadline    DateTime
-  createdById Int
-  parameters  ParameterSubmission[]
-  createdBy   User                  @relation("UserTasks", fields: [createdById], references: [id])
-  criteria    TaskCriteria[]
-  submissions TaskSubmission[]
+  id                  Int                   @id @default(autoincrement())
+  title               String
+  description         String
+  code                String                @unique
+  createdAt           DateTime              @default(now())
+  deadline            DateTime
+  createdById         Int
+  ParameterSubmission ParameterSubmission[]
+  createdBy           User                  @relation("UserTasks", fields: [createdById], references: [id])
+  criteria            TaskCriteria[]
+  submissions         TaskSubmission[]
 }
 
 model TaskCriteria {
@@ -41,22 +41,22 @@ model TaskCriteria {
   createdAt   DateTime @default(now())
   createdById Int
   taskId      Int
-  createdBy   User     @relation("UserCriteria", fields: [createdById], references: [id])
+  User        User     @relation(fields: [createdById], references: [id])
   task        Task     @relation(fields: [taskId], references: [id])
 }
 
 model TaskSubmission {
-  id          Int      @id @default(autoincrement())
-  fileUrl     String
-  createdAt   DateTime @default(now())
-  aiFeedback  String?
-  aiGrade     Float?
-  createdById Int
-  userId      Int
-  taskId      Int
-  createdBy   User     @relation("UserSubmissions", fields: [createdById], references: [id])
-  task        Task     @relation(fields: [taskId], references: [id])
-  user        User     @relation("StudentSubmissions", fields: [userId], references: [id])
+  id                                    Int      @id @default(autoincrement())
+  fileUrl                               String
+  createdAt                             DateTime @default(now())
+  aiFeedback                            String?
+  aiGrade                               Float?
+  createdById                           Int
+  userId                                Int
+  taskId                                Int
+  User_TaskSubmission_createdByIdToUser User     @relation("TaskSubmission_createdByIdToUser", fields: [createdById], references: [id])
+  task                                  Task     @relation(fields: [taskId], references: [id])
+  user                                  User     @relation(fields: [userId], references: [id])
 }
 
 model ParameterSubmission {
@@ -66,7 +66,7 @@ model ParameterSubmission {
   description String
   createdAt   DateTime @default(now())
   taskId      Int
-  task        Task     @relation(fields: [taskId], references: [id])
+  Task        Task     @relation(fields: [taskId], references: [id])
 }
 
 enum Role {

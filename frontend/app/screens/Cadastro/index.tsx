@@ -19,28 +19,32 @@ import {
 } from './style';
 import {router} from 'expo-router'
 // import {SelectDropdown, DropdownData} from "expo-select-dropdown";
-import { Text, Alert, TouchableOpacity, ScrollView  } from 'react-native';
+import { Text, Alert, TouchableOpacity, ScrollView } from 'react-native';
 
-export default function Login() {
+export default function Cadastro() {
+  const [nome, setNome] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('ALUNO');
   const [loading, setLoading] = useState(false);
 
   const [selected, setSelected] = useState<DropdownData<string, string> | null>(null);  
-
-  async function handleLogin() {
+    
+  async function handleCadastro() {
     try{
       setLoading(true);
 
-      const response = await fetch('http://192.168.1.13:3000/auth/login',
+      const response = await fetch('http://192.168.1.13:3000/users',
         {
           method: 'POST',
           headers:{
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            nome,
             email,
             password,
+            role
           }),
         },
       );
@@ -49,7 +53,7 @@ export default function Login() {
 
       if (!response.ok) {
         throw new Error(
-          data.message || 'Erro ao realizar login',
+          data.message || 'Erro ao realizar cadastro',
         );
       }
 
@@ -66,7 +70,7 @@ export default function Login() {
       }
 
     } catch (error: any) {
-      Alert.alert('Erro', error.message || 'Falha ao realizar login',
+      Alert.alert('Erro', error.message || 'Falha ao realizar cadastro',
       );
     }finally {
       setLoading(false);
@@ -79,8 +83,16 @@ export default function Login() {
         <Title>SmartGrade</Title>
         <Subtitle>Bem-vindo</Subtitle>
         <Text style={{ textAlign: 'center', color: '#636E72', marginBottom: 20 }}>
-          Login.
+          Cadastre-se.
         </Text>
+
+        <Label>Nome</Label>
+        <InputContainer>
+          <Input
+          placeholder="Digite seu nome"
+          value={nome}
+          onChangeText={setNome}/>
+        </InputContainer>
 
         <Label>E-mail</Label>
         <InputContainer>
@@ -89,6 +101,15 @@ export default function Login() {
           value={email}
           onChangeText={setEmail} />
         </InputContainer>
+
+        <Label>Role</Label>
+        <TouchableOpacity onPress={() => setRole('ALUNO')}>
+          <Text>Aluno</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => setRole('PROFESSOR')}>
+          <Text>Professor</Text>
+        </TouchableOpacity>
         
         <Label>Senha</Label>
         <InputContainer>
@@ -98,7 +119,7 @@ export default function Login() {
           onChangeText={setPassword} />
         </InputContainer>
 
-        <Button onPress={handleLogin}>
+        <Button onPress={handleCadastro}>
           <ButtonText>{loading ? "Entrando..." : "Entrar"}</ButtonText>
         </Button>
 
@@ -116,13 +137,12 @@ export default function Login() {
           <SocialText>Apple</SocialText>
         </SocialButton>
 
-        <FooterText>
+        {/* <FooterText>
           Não tem uma conta? <TouchableOpacity onPress={() => router.push('/screens/Cadastro')}>Criar conta</TouchableOpacity>
-        </FooterText>
-
-        <TouchableOpacity onPress={() => router.push('/screens/Cadastro')}><Text>Criar Conta</Text></TouchableOpacity>
+        </FooterText> */}
       </Card>
     </Container>
     </ScrollView>
   );
 }
+
