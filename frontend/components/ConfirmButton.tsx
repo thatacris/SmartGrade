@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import { styles } from "app/screens/Feedback/styles";
+import { styles } from "styles/feedback.styles";
 
 type Props = {
     onPress: () => void;

@@ -6,6 +6,8 @@ import {
   ScrollView,
 } from 'react-native';
 
+import Entypo from '@expo/vector-icons/Entypo';
+
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -55,7 +57,7 @@ export default function AuthScreen() {
             Selecione seu portal para continuar
           </Text>
 
-          <TouchableOpacity activeOpacity={0.8} onPress={() => router.push('/screens/Login')}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => router.replace('/auth/Login')}>
             <LinearGradient
               colors={['#3457D5', '#8B3FB3']}
               start={{ x: 0, y: 0 }}
@@ -63,18 +65,19 @@ export default function AuthScreen() {
               style={styles.loginButton}
               
             >
-              <View style={styles.loginIcon}>
-                <Text style={styles.iconText}>⚙</Text>
-              </View>
+              {/* <View style={styles.loginIcon}>
+                <Entypo name="login" size={24} color="black" />
+                <Text style={styles.iconText}></Text>
+              </View> */}
 
               
               <Text style={styles.loginText}>
                 Entrar
               </Text>
 
-              <Text style={styles.arrow}>
+              {/* <Text style={styles.arrow}>
                 →
-              </Text>
+              </Text> */}
             </LinearGradient>
           </TouchableOpacity>
 
@@ -89,9 +92,10 @@ export default function AuthScreen() {
             <View style={styles.line} />
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={() => router.push('/auth/Cadastro')}>
             <Text style={styles.signupText}>
-              Criar conta ↗
+              Criar conta 
             </Text>
           </TouchableOpacity>
 
@@ -100,27 +104,6 @@ export default function AuthScreen() {
             Termos de Serviço e Política de Integridade Acadêmica.
           </Text>
 
-          <TouchableOpacity style={styles.helpContainer}>
-            <Text style={styles.helpIcon}>ⓘ</Text>
-
-            <Text style={styles.helpText}>
-              Precisa de ajuda com seu login?
-            </Text>
-          </TouchableOpacity>
-
-          <View style={styles.stores}>
-            <TouchableOpacity style={styles.storeButton}>
-              <Text style={styles.storeText}>
-                APP STORE
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.storeButton}>
-              <Text style={styles.storeText}>
-                GOOGLE PLAY
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

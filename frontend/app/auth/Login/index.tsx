@@ -15,36 +15,35 @@ import {
   SocialButton,
   SocialText,
   FooterText,
-  // IconWrapper,
-} from '../../../styles/cadastro.styles';
+} from '../../../styles/login.styles';
 import {router} from 'expo-router'
-// import {SelectDropdown, DropdownData} from "expo-select-dropdown";
-import { Text, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, Alert, TouchableOpacity, ScrollView  } from 'react-native';
+import { useAuth } from 'hooks/useAuth';
 
-export default function Cadastro() {
-  const [nome, setNome] = useState('')
+
+
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('ALUNO');
   const [loading, setLoading] = useState(false);
 
-  const [selected, setSelected] = useState<DropdownData<string, string> | null>(null);  
-    
-  async function handleCadastro() {
+  const api = process.env.EXPO_PUBLIC_BASE_URL
+
+  const {signIn} = useAuth()
+
+  async function handleLogin() {
     try{
       setLoading(true);
 
-      const response = await fetch('http://192.168.1.13:3000/users',
+      const response = await fetch(`${api}auth/login`,
         {
           method: 'POST',
           headers:{
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            nome,
             email,
             password,
-            role
           }),
         },
       );
@@ -53,27 +52,37 @@ export default function Cadastro() {
 
       if (!response.ok) {
         throw new Error(
-          data.message || 'Erro ao realizar cadastro',
+          data.message || 'Erro ao realizar login',
         );
       }
 
-      console.log('data', data);
+      // console.log('data', data);
 
       const role = data.user.role;
 
-      if (role === 'PROFESSOR'){
-        router.push('/screens/CriarRubrica');
-      } else if(role === 'ALUNO') {
-        router.push('/screens/SubmitScreen');
-      } else {
-        Alert.alert('Erro','Perfil não reconhecido');
-      }
+      const token = data.access_token;
 
+      const userId = Number(data.user.id);
+
+      // console.log('tokenLogin', token)
+
+      // if (role === 'PROFESSOR'){
+      //   router.push('/screens/CriarRubrica');
+      // } else if(role === 'ALUNO') {
+      //   router.push('/screens/TelaInicial');
+      // } else {
+      //   Alert.alert('Erro','Perfil não reconhecido');
+      // }
+
+      
+      signIn(role, token, userId)
     } catch (error: any) {
-      Alert.alert('Erro', error.message || 'Falha ao realizar cadastro',
+      Alert.alert('Erro', error.message || 'Falha ao realizar login',
       );
     }finally {
+      
       setLoading(false);
+      
     }
   }
   return (
@@ -83,16 +92,8 @@ export default function Cadastro() {
         <Title>SmartGrade</Title>
         <Subtitle>Bem-vindo</Subtitle>
         <Text style={{ textAlign: 'center', color: '#636E72', marginBottom: 20 }}>
-          Cadastre-se.
+           Login.
         </Text>
-
-        <Label>Nome</Label>
-        <InputContainer>
-          <Input
-          placeholder="Digite seu nome"
-          value={nome}
-          onChangeText={setNome}/>
-        </InputContainer>
 
         <Label>E-mail</Label>
         <InputContainer>
@@ -101,15 +102,6 @@ export default function Cadastro() {
           value={email}
           onChangeText={setEmail} />
         </InputContainer>
-
-        <Label>Role</Label>
-        <TouchableOpacity onPress={() => setRole('ALUNO')}>
-          <Text>Aluno</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => setRole('PROFESSOR')}>
-          <Text>Professor</Text>
-        </TouchableOpacity>
         
         <Label>Senha</Label>
         <InputContainer>
@@ -119,11 +111,11 @@ export default function Cadastro() {
           onChangeText={setPassword} />
         </InputContainer>
 
-        <Button onPress={handleCadastro}>
+        <Button onPress={handleLogin}>
           <ButtonText>{loading ? "Entrando..." : "Entrar"}</ButtonText>
         </Button>
 
-        <DividerRow>
+        {/* <DividerRow>
           <Divider />
           <DividerText>OU CONTINUE COM</DividerText>
           <Divider />
@@ -135,14 +127,15 @@ export default function Cadastro() {
 
         <SocialButton>
           <SocialText>Apple</SocialText>
-        </SocialButton>
+        </SocialButton> */}
 
-        {/* <FooterText>
-          Não tem uma conta? <TouchableOpacity onPress={() => router.push('/screens/Cadastro')}>Criar conta</TouchableOpacity>
-        </FooterText> */}
+        <FooterText>
+          Não tem uma conta? <TouchableOpacity onPress={() => router.push('/screens/Cadastro')}><Text>Criar conta</Text></TouchableOpacity>
+        </FooterText>
+
+        {/* <TouchableOpacity onPress={() => router.push('/screens/Cadastro')}><Text>Criar Conta</Text></TouchableOpacity> */}
       </Card>
     </Container>
     </ScrollView>
   );
 }
-

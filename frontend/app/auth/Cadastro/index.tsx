@@ -1,0 +1,233 @@
+import React, { useState } from 'react';
+import { router } from 'expo-router';
+import {
+  View,
+  Text,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from 'react-native';
+
+import { styles } from '../../../styles/cadastro.styles';
+
+enum Role  {
+  ALUNO='ALUNO',
+  PROFESSOR='PROFESSOR'
+}
+
+export default function Cadastro() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<Role>(Role.ALUNO);
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const api = process.env.EXPO_PUBLIC_BASE_URL
+
+async function handleCadastro() {
+  try {
+    if (
+      !name?.trim() ||
+      !email?.trim() ||
+      !password?.trim() ||
+      !role
+    ) {
+      Alert.alert(
+        'Campos obrigatórios',
+        'Preencha todos os campos.'
+      );
+      return;
+    }
+
+    if (password.trim().length < 6) {
+      Alert.alert(
+        'Senha inválida',
+        'A senha deve ter pelo menos 6 caracteres.'
+      );
+      return;
+    }
+
+    const emailRegex = /\S+@\S+\.\S+/;
+
+    if (!emailRegex.test(email.trim())) {
+      Alert.alert(
+        'E-mail inválido',
+        'Digite um e-mail válido.'
+      );
+      return;
+    }
+
+    setLoading(true);
+
+    const response = await fetch(`${api}users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name.trim(),
+        email: email.trim(),
+        password,
+        role,
+      }),
+    });
+
+    const data = await response.json();
+
+    console.log('Resposta cadastro:', data);
+
+    if (response.status === 201) {
+      Alert.alert(
+        'Sucesso',
+        'Usuário cadastrado com sucesso!',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              router.replace('/screens/Login');
+            },
+          },
+        ]
+      );
+
+      return;
+    }
+
+    throw new Error(
+      data.message || 'Erro ao realizar cadastro'
+    );
+  } catch (error: any) {
+    console.error(error);
+
+    Alert.alert(
+      'Erro',
+      error.message || 'Falha ao realizar cadastro'
+    );
+  } finally {
+    setLoading(false);
+  }
+}
+
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.card}>
+          <Text style={styles.title}>SmartGrade</Text>
+
+          <Text style={styles.subtitle}>
+            Bem-vindo
+          </Text>
+
+          <Text style={styles.description}>
+            Cadastre-se
+          </Text>
+
+          <Text style={styles.label}>Nome</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu nome"
+            value={name}
+            onChangeText={setName}
+          />
+
+  
+
+          <Text style={styles.label}>E-mail</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="nome@instituicao.edu"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+
+
+          <Text style={styles.label}>Perfil</Text>
+
+          <View style={styles.roleContainer}>
+            <TouchableOpacity
+              style={[
+                styles.roleButton,
+                role === Role.ALUNO &&
+                  styles.roleButtonSelected,
+              ]}
+              onPress={() => setRole(Role.ALUNO)}
+            >
+              <Text
+                style={[
+                  styles.roleText,
+                  role === Role.ALUNO &&
+                    styles.roleTextSelected,
+                ]}
+              >
+                Aluno
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.roleButton,
+                role === Role.PROFESSOR &&
+                  styles.roleButtonSelected,
+              ]}
+              onPress={() => setRole(Role.PROFESSOR)}
+            >
+              <Text
+                style={[
+                  styles.roleText,
+                  role === Role.PROFESSOR &&
+                    styles.roleTextSelected,
+                ]}
+              >
+                Professor
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+
+          <Text style={styles.label}>Senha</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="sua senha"
+            // secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleCadastro}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>
+              {loading
+                ? 'Cadastrando...'
+                : 'Realizar Cadastro'}
+            </Text>
+          </TouchableOpacity>
+
+          {/* <View style={styles.dividerRow}>
+            <View style={styles.divider} />
+            <Text style={styles.dividerText}>
+              OU CONTINUE COM
+            </Text>
+            <View style={styles.divider} />
+          </View>
+
+          <TouchableOpacity style={styles.socialButton}>
+            <Text style={styles.socialText}>
+              Google
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.socialButton}>
+            <Text style={styles.socialText}>
+              Apple
+            </Text>
+          </TouchableOpacity> */}
+        </View>
+      </View>
+    </ScrollView>
+  );
+}

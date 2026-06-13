@@ -5,7 +5,7 @@ import {
   Image,
 } from "react-native";
 
-import { globalStyles } from "app/screens/Feedback/styles";
+import { globalStyles } from "styles/feedback.styles";
 
 export default function UploadCard() {
   return (
