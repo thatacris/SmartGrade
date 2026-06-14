@@ -57,8 +57,6 @@ export default function Login() {
 
       const token = data.access_token;
 
-      alert('Login realizado com sucesso!')
-
       
       signIn(data.user, token)
     } catch (error: any) {
@@ -110,7 +108,7 @@ export default function Login() {
           Não tem uma conta? <TouchableOpacity onPress={() => router.push('/auth/Cadastro')}><Text>Criar conta</Text></TouchableOpacity>
         </FooterText>
 
-        {/* <TouchableOpacity onPress={() => router.push('/screens/Cadastro')}><Text>Criar Conta</Text></TouchableOpacity> */}
+  
       </Card>
     </Container>
     

@@ -12,6 +12,7 @@ import {
 
 import { styles } from '../../../styles/cadastro.styles';
 import PageContainer from 'components/PageContainer';
+import { useAuth } from 'hooks/useAuth';
 
 enum Role  {
   ALUNO='ALUNO',
@@ -26,6 +27,7 @@ export default function Cadastro() {
   const [loading, setLoading] = useState(false);
 
   const api = process.env.EXPO_PUBLIC_BASE_URL
+  const {signIn} = useAuth()
 
 async function handleCadastro() {
   try {
@@ -69,7 +71,7 @@ async function handleCadastro() {
       },
       body: JSON.stringify({
         name: name.trim(),
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         password,
         role,
       }),
@@ -77,24 +79,39 @@ async function handleCadastro() {
 
     const data = await response.json();
 
+    if (!response.ok) {
+        throw new Error(
+          data.message || 'Erro ao realizar cadastro',
+        );
+      }
+
+    const responseLogin = await fetch(
+  `${api}auth/login`,
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email.trim().toLowerCase(),
+      password: password,
+    }),
+  }
+);
+
+const dataLogin = await responseLogin.json();
+
+if (!responseLogin.ok) {
+  throw new Error(
+    dataLogin.message || 'Erro ao realizar login'
+  );
+}
+
+await signIn(
+  dataLogin.user,
+  dataLogin.access_token
+);
     console.log('Resposta cadastro:', data);
-
-    if (response.status === 201) {
-      Alert.alert(
-        'Sucesso',
-        'Usuário cadastrado com sucesso!',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              router.replace('/screens/Login');
-            },
-          },
-        ]
-      );
-
-      return;
-    }
 
     throw new Error(
       data.message || 'Erro ao realizar cadastro'
@@ -199,7 +216,7 @@ async function handleCadastro() {
           <TextInput
             style={styles.input}
             placeholder="sua senha"
-            // secureTextEntry
+            secureTextEntry
             value={password}
             onChangeText={setPassword}
           />
@@ -216,25 +233,6 @@ async function handleCadastro() {
             </Text>
           </TouchableOpacity>
 
-          {/* <View style={styles.dividerRow}>
-            <View style={styles.divider} />
-            <Text style={styles.dividerText}>
-              OU CONTINUE COM
-            </Text>
-            <View style={styles.divider} />
-          </View>
-
-          <TouchableOpacity style={styles.socialButton}>
-            <Text style={styles.socialText}>
-              Google
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.socialButton}>
-            <Text style={styles.socialText}>
-              Apple
-            </Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </PageContainer>
